@@ -13,22 +13,22 @@ class Auth extends BaseController
 
     public function attempt()
     {
-        $model = new UserModel();
-
-        $email = $this->request->getPost('email');
+        $email    = $this->request->getPost('email', FILTER_SANITIZE_EMAIL);
         $password = $this->request->getPost('password');
 
-        $user = $model->where('email', $email)->first();
+        if (empty($email) || empty($password)) {
+            return redirect()->back()->with('error', 'Invalid login');
+        }
+
+        $user = (new UserModel())->where('email', $email)->first();
 
         if ($user && password_verify($password, $user['password'])) {
-
             session()->set([
                 'id'        => $user['id'],
                 'name'      => $user['name'],
                 'role'      => $user['role'],
-                'logged_in' => true
+                'logged_in' => true,
             ]);
-
             return redirect()->to('/dashboard');
         }
 

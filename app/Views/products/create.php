@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Add Product</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -13,9 +13,20 @@
 <form method="post" action="/products/store">
 <?= csrf_field() ?>
 
+<?php if (session('errors')): ?>
+  <div class="alert alert-danger">
+    <?php foreach (session('errors') as $e): ?><p class="mb-0"><?= esc($e) ?></p><?php endforeach; ?>
+  </div>
+<?php endif; ?>
+
 <input type="text" name="product_name" class="form-control mb-3" placeholder="Product Name" required>
 
-<input type="number" name="category_id" class="form-control mb-3" placeholder="Category ID" required>
+<select name="category_id" class="form-control mb-3" required>
+  <option value="">-- Select Category --</option>
+  <?php foreach ($categories as $cat): ?>
+    <option value="<?= esc($cat['id'], 'attr') ?>"><?= esc($cat['category_name']) ?></option>
+  <?php endforeach; ?>
+</select>
 
 <button class="btn btn-success">Save</button>
 <a href="/products" class="btn btn-secondary">Back</a>

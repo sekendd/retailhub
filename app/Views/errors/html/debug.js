@@ -12,8 +12,10 @@ function init()
         {
             var tabLink     = getFirstChildWithTagName(tabListItems[i], 'A');
             var id          = getHash(tabLink.getAttribute('href'));
-            tabLinks[id]    = tabLink;
-            contentDivs[id] = document.getElementById(id);
+            if (!Object.prototype.hasOwnProperty.call(Object.prototype, id)) {
+                tabLinks[id]    = tabLink;
+                contentDivs[id] = document.getElementById(id);
+            }
         }
     }
 

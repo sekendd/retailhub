@@ -8,27 +8,18 @@ class Api extends BaseController
 {
     public function products()
     {
-        $variant = new VariantModel();
-
         return $this->response->setJSON(
-            $variant->findAll()
+            (new VariantModel())->findAll()
         );
     }
 
     public function stock($id)
     {
-        $token = $this->request->getHeaderLine('Authorization');
+        $item = (new VariantModel())->find((int) $id);
 
-        if ($token != 'Bearer retailhub123') {
-            return $this->response
-                ->setStatusCode(401)
-                ->setJSON([
-                    'error' => 'Unauthorized'
-                ]);
+        if (! $item) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'Not found']);
         }
-
-        $variant = new VariantModel();
-        $item = $variant->find($id);
 
         return $this->response->setJSON($item);
     }

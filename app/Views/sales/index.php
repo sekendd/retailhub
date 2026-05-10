@@ -2,13 +2,20 @@
 <html>
 <head>
 <title>Sales</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container mt-5">
 
 <h2>Sales Module</h2>
+
+<?php if (session()->getFlashdata('success')): ?>
+<div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
+<?php endif; ?>
+<?php if (session()->getFlashdata('error')): ?>
+<div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
+<?php endif; ?>
 
 <form method="post" action="/sales/checkout">
 <?= csrf_field() ?>
@@ -18,12 +25,12 @@
 
 <?php if (!empty($variants)): ?>
 <?php foreach($variants as $row): ?>
-<option value="<?= $row['id'] ?>">
-ID <?= $row['id'] ?> |
-<?= $row['size'] ?> |
-<?= $row['color'] ?> |
-₱<?= $row['price'] ?> |
-Stock <?= $row['stock'] ?>
+<option value="<?= esc($row['id']) ?>">
+ID <?= esc($row['id']) ?> |
+<?= esc($row['size']) ?> |
+<?= esc($row['color']) ?> |
+₱<?= esc($row['price']) ?> |
+Stock <?= esc($row['stock']) ?>
 </option>
 <?php endforeach; ?>
 <?php endif; ?>

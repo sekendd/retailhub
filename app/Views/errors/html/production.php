@@ -7,6 +7,7 @@
     <title><?= lang('Errors.whoops') ?></title>
 
     <style>
+        // amazonq-ignore-next-line
         <?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'debug.css')) ?>
     </style>
 </head>

@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Products</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -46,11 +46,11 @@ value="<?= esc($search ?? '') ?>">
 <tr>
 <td><?= esc($row['id']) ?></td>
 <td><?= esc($row['product_name']) ?></td>
-<td><?= esc($row['category_id']) ?></td>
+<td><?= esc($row['category_name'] ?? $row['category_id']) ?></td>
 <td>
-<a href="/variants/<?= $row['id'] ?>" class="btn btn-info btn-sm">Variants</a>
-<a href="/products/edit/<?= $row['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
-<a href="/products/delete/<?= $row['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
+<a href="/variants/<?= esc($row['id'], 'url') ?>" class="btn btn-info btn-sm">Variants</a>
+<a href="/products/edit/<?= esc($row['id'], 'url') ?>" class="btn btn-warning btn-sm">Edit</a>
+<a href="/products/delete/<?= esc($row['id'], 'url') ?>" class="btn btn-danger btn-sm">Delete</a>
 </td>
 </tr>
 <?php endforeach; ?>

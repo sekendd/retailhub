@@ -3,6 +3,8 @@
 namespace Config;
 
 use CodeIgniter\Config\Filters as BaseFilters;
+use App\Filters\AuthFilter;
+use App\Filters\LoginRateLimit;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -25,7 +27,9 @@ class Filters extends BaseFilters
      * or [filter_name => [classname1, classname2, ...]]
      */
     public array $aliases = [
-        'csrf'          => CSRF::class,
+        'auth'           => AuthFilter::class,
+        'loginRateLimit' => LoginRateLimit::class,
+        'csrf'           => CSRF::class,
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
@@ -72,13 +76,13 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
+            'csrf',
             // 'honeypot',
-            // 'csrf',
             // 'invalidchars',
         ],
         'after' => [
+            'secureheaders',
             // 'honeypot',
-            // 'secureheaders',
         ],
     ];
 
@@ -106,5 +110,19 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'auth' => [
+            'before' => [
+                'dashboard',
+                'products*',
+                'variants*',
+                'sales*',
+                'returns*',
+                'api*',
+            ],
+        ],
+        'loginRateLimit' => [
+            'before' => ['login'],
+        ],
+    ];
 }

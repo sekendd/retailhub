@@ -9,35 +9,34 @@ class Variants extends BaseController
 {
     public function index($product_id)
     {
-        if (!session()->get('logged_in')) return redirect()->to('/');
-
-        $variant = new VariantModel();
-        $product = new ProductModel();
-
-        $data['variants'] = $variant->where('product_id', $product_id)->findAll();
-        $data['product'] = $product->find($product_id);
-
-        return view('variants/index', $data);
+        return view('variants/index', [
+            'variants' => (new VariantModel())->getByProduct((int) $product_id),
+            'product'  => (new ProductModel())->find((int) $product_id),
+        ]);
     }
 
     public function create($product_id)
     {
-        $data['product_id'] = $product_id;
-        return view('variants/create', $data);
+        return view('variants/create', ['product_id' => (int) $product_id]);
     }
 
     public function store()
     {
-        $variant = new VariantModel();
+        $model = new VariantModel();
+        $data  = $this->request->getPost(['product_id', 'size', 'color', 'price', 'stock']);
 
-        $variant->save([
-            'product_id' => $this->request->getPost('product_id'),
-            'size' => $this->request->getPost('size'),
-            'color' => $this->request->getPost('color'),
-            'price' => $this->request->getPost('price'),
-            'stock' => $this->request->getPost('stock')
+        if (!$model->validate($data)) {
+            return redirect()->back()->withInput()->with('errors', $model->errors());
+        }
+
+        $model->save([
+            'product_id' => (int) $data['product_id'],
+            'size'       => $data['size'],
+            'color'      => $data['color'],
+            'price'      => (float) $data['price'],
+            'stock'      => (int) $data['stock'],
         ]);
 
-        return redirect()->to('/variants/' . $this->request->getPost('product_id'));
+        return redirect()->to('/variants/' . (int) $data['product_id']);
     }
 }
