@@ -12,18 +12,27 @@ class Products extends BaseController
             return redirect()->to('/');
         }
 
-        $model = new ProductModel();
+        $cache = cache();
 
-        $search = $this->request->getGet('search');
+        $data = $cache->get('products_data');
 
-        if ($search) {
-            $model->like('product_name', $search);
+        if (!$data) {
+
+            $model = new ProductModel();
+
+            $search = $this->request->getGet('search');
+
+            if ($search) {
+                $model->like('product_name', $search);
+            }
+
+            $data = [
+                'products' => $model->findAll(),
+                'search'   => $search
+            ];
+
+            $cache->save('products_data', $data, 60);
         }
-
-        $data = [
-            'products' => $model->findAll(),
-            'search'   => $search
-        ];
 
         return view('products/index', $data);
     }
@@ -41,10 +50,24 @@ class Products extends BaseController
     {
         $model = new ProductModel();
 
+        $image = $this->request->getFile('image');
+
+        $imageName = '';
+
+        if ($image && $image->isValid() && !$image->hasMoved()) {
+
+            $imageName = $image->getRandomName();
+
+            $image->move(ROOTPATH . 'public/uploads', $imageName);
+        }
+
         $model->save([
             'product_name' => $this->request->getPost('product_name'),
-            'category_id'  => $this->request->getPost('category_id')
+            'category_id'  => $this->request->getPost('category_id'),
+            'image'        => $imageName
         ]);
+
+        cache()->delete('products_data');
 
         return redirect()->to('/products');
     }
@@ -67,6 +90,8 @@ class Products extends BaseController
             'category_id'  => $this->request->getPost('category_id')
         ]);
 
+        cache()->delete('products_data');
+
         return redirect()->to('/products');
     }
 
@@ -75,6 +100,8 @@ class Products extends BaseController
         $model = new ProductModel();
 
         $model->delete($id);
+
+        cache()->delete('products_data');
 
         return redirect()->to('/products');
     }

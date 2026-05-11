@@ -7,6 +7,7 @@ use CodeIgniter\Model;
 class VariantModel extends Model
 {
     protected $table = 'product_variants';
+
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
