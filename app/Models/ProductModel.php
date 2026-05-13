@@ -8,10 +8,5 @@ class ProductModel extends Model
 {
     protected $table = 'products';
     protected $primaryKey = 'id';
-
-    protected $allowedFields = [
-        'product_name',
-        'category_id',
-        'image'
-    ];
+    protected $allowedFields = ['product_name', 'category_id', 'image'];
 }

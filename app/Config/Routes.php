@@ -7,10 +7,11 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 $routes->get('/', 'Auth::index');
-$routes->post('/login', 'Auth::attempt');
-$routes->get('/logout', 'Auth::logout');
+$routes->post('login', 'Auth::login');
+$routes->get('/logout', 'Auth::logout');    
 
 $routes->get('/dashboard', 'Dashboard::index');
+
 
 $routes->get('/products', 'Products::index');
 $routes->get('/products/create', 'Products::create');
@@ -19,9 +20,17 @@ $routes->get('/products/edit/(:num)', 'Products::edit/$1');
 $routes->post('/products/update/(:num)', 'Products::update/$1');
 $routes->get('/products/delete/(:num)', 'Products::delete/$1');
 
-$routes->get('/variants/(:num)', 'Variants::index/$1');
-$routes->get('/variants/create/(:num)', 'Variants::create/$1');
-$routes->post('/variants/store', 'Variants::store');
+// app/Config/Routes.php
+$routes->get('variants/index/(:num)', 'Variants::index/$1');
+$routes->get('variants/create/(:num)', 'Variants::create/$1');
+$routes->post('variants/store', 'Variants::store');
+$routes->get('variants/delete/(:num)/(:num)', 'Variants::delete/$1/$2');
+
+$routes->get('variants/(:num)', 'Variants::index/$1');
+
+// app/Config/Routes.php
+$routes->get('variants/edit/(:num)', 'Variants::edit/$1');
+$routes->post('variants/update', 'Variants::update');
 
 $routes->get('/sales', 'Sales::index');
 $routes->post('/sales/checkout', 'Sales::checkout');

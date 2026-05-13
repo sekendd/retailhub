@@ -1,62 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Add Product</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Add Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
 <div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="mb-4">Add Product</h2>
 
-<div class="card shadow">
-<div class="card-body">
+            <!-- Only ONE form tag is needed -->
+            <form action="<?= base_url('products/store') ?>" method="post" enctype="multipart/form-data">
+                
+                
+                <?= csrf_field() ?>
 
-<h2 class="mb-4">Add Product</h2>
+                <div class="mb-3">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" 
+                           name="product_name" 
+                           class="form-control" 
+                           placeholder="Enter product name" 
+                           required>
+                </div>
 
-<form method="post"
-action="/products/store"
-enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Category ID</label>
+                    <input type="number" 
+                           name="category_id" 
+                           class="form-control" 
+                           placeholder="Enter category ID" 
+                           required>
+                </div>
 
-<?= csrf_field() ?>
+                <div class="mb-4">
+                    <label class="form-label">Product Image</label>
+                    <input type="file" 
+                           name="image" 
+                           class="form-control" 
+                           accept="image/*">
+                </div>
 
-<label class="form-label">Product Name</label>
+                <button type="submit" class="btn btn-success">Save Product</button>
+                <a href="<?= base_url('products') ?>" class="btn btn-secondary">Back</a>
+                
+            </form>
 
-<input type="text"
-name="product_name"
-class="form-control mb-3"
-placeholder="Enter product name"
-required>
-
-<label class="form-label">Category ID</label>
-
-<input type="number"
-name="category_id"
-class="form-control mb-3"
-placeholder="Enter category ID"
-required>
-
-<label class="form-label">Product Image</label>
-
-<input type="file"
-name="image"
-class="form-control mb-4"
-accept="image/*">
-
-<button type="submit"
-class="btn btn-success">
-Save Product
-</button>
-
-<a href="/products"
-class="btn btn-secondary">
-Back
-</a>
-
-</form>
-
-</div>
-</div>
-
+        </div>
+    </div>
 </div>
 
 </body>

@@ -12,14 +12,23 @@ class Products extends BaseController
             return redirect()->to('/');
         }
 
-        $cache = cache();
+        $model = new ProductModel();
 
+         $cache = cache();
+         $data = $cache->get('products_data');
+
+        $data = [
+        'products' => $model->findAll(),
+        'search'   => $this->request->getGet('search')
+    ];
+    return view('products/index', $data);
+        
+
+        $cache = cache();
         $data = $cache->get('products_data');
 
         if (!$data) {
-
             $model = new ProductModel();
-
             $search = $this->request->getGet('search');
 
             if ($search) {
@@ -37,7 +46,8 @@ class Products extends BaseController
         return view('products/index', $data);
     }
 
-    public function create()
+
+public function create()
     {
         if (!session()->get('logged_in')) {
             return redirect()->to('/');
@@ -46,61 +56,74 @@ class Products extends BaseController
         return view('products/create');
     }
 
-    public function store()
-    {
-        $model = new ProductModel();
+  public function store()
+{
+    $model = new ProductModel();
+    $image = $this->request->getFile('image');
+    $imageName = null;
 
-        $image = $this->request->getFile('image');
-
-        $imageName = '';
-
-        if ($image && $image->isValid() && !$image->hasMoved()) {
-
-            $imageName = $image->getRandomName();
-
-            $image->move(ROOTPATH . 'public/uploads', $imageName);
-        }
-
-        $model->save([
-            'product_name' => $this->request->getPost('product_name'),
-            'category_id'  => $this->request->getPost('category_id'),
-            'image'        => $imageName
-        ]);
-
-        cache()->delete('products_data');
-
-        return redirect()->to('/products');
+    if ($image && $image->isValid() && !$image->hasMoved()) {
+        $imageName = $image->getRandomName();
+        $image->move(FCPATH . 'uploads/products', $imageName);
     }
+
+    $data = [
+        'product_name' => $this->request->getPost('product_name'),
+        'category_id'  => $this->request->getPost('category_id'),
+        'image'        => $imageName
+    ];
+
+    // 1. Remove the dd($data) line so the code actually runs
+    // 2. Use the Database Connection directly to bypass Model restrictions
+    $db = \Config\Database::connect();
+    $db->table('products')->insert($data);
+
+    // 3. Clear the cache that was mentioned in your UI
+    cache()->delete('products_data');
+
+    return redirect()->to('/products');
+}
 
     public function edit($id)
     {
-        $model = new ProductModel();
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/');
+        }
 
+        $model = new ProductModel();
         $data['product'] = $model->find($id);
+
+        if (!$data['product']) {
+            return redirect()->to('/products')->with('error', 'Product not found.');
+        }
 
         return view('products/edit', $data);
     }
+    
 
     public function update($id)
-    {
-        $model = new ProductModel();
+{
+    $model = new ProductModel();
+    
+    // 1. Capture the data exactly as it comes from the form
+    $updateData = [
+        'product_name' => $this->request->getPost('product_name'),
+        'category_id'  => $this->request->getPost('category_id') // This will now carry the decimal
+    ];
 
-        $model->update($id, [
-            'product_name' => $this->request->getPost('product_name'),
-            'category_id'  => $this->request->getPost('category_id')
-        ]);
-
+    // 2. Perform the update
+    if ($model->update($id, $updateData)) {
+        // 3. IMPORTANT: Clear the cache so the Inventory tab sees the NEW data
         cache()->delete('products_data');
-
-        return redirect()->to('/products');
+        return redirect()->to('/products')->with('success', 'Product updated successfully');
+    } else {
+        return redirect()->back()->with('error', 'Update failed');
     }
-
+}
     public function delete($id)
     {
         $model = new ProductModel();
-
         $model->delete($id);
-
         cache()->delete('products_data');
 
         return redirect()->to('/products');

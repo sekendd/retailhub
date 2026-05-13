@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5cce40800fa5dae1504b9364f585e6a",
+    "content-hash": "68727ff044ae6c6e4c9a3cbd9b7b0e71",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -193,6 +193,74 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "tatter/assets",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tattersoftware/codeigniter4-assets.git",
+                "reference": "b0f6177d36b8a9bfa7ad7ab37c3a0b60aed75fca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tattersoftware/codeigniter4-assets/zipball/b0f6177d36b8a9bfa7ad7ab37c3a0b60aed75fca",
+                "reference": "b0f6177d36b8a9bfa7ad7ab37c3a0b60aed75fca",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "codeigniter4/framework": "^4.1",
+                "tatter/tools": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tatter\\Assets\\": "src"
+                },
+                "exclude-from-classmap": [
+                    "**/Database/Migrations/**"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Gatner",
+                    "email": "mgatner@tattersoftware.com",
+                    "homepage": "https://tattersoftware.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Asset publishing and loading for CodeIgniter 4",
+            "homepage": "https://github.com/tattersoftware/codeigniter4-assets",
+            "keywords": [
+                "assets",
+                "codeigniter",
+                "codeigniter4",
+                "css",
+                "javascript",
+                "loader"
+            ],
+            "support": {
+                "issues": "https://github.com/tattersoftware/codeigniter4-assets/issues",
+                "source": "https://github.com/tattersoftware/codeigniter4-assets/tree/v3.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/tatter",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tattersoftware",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-09-28T22:46:23+00:00"
         }
     ],
     "packages-dev": [
