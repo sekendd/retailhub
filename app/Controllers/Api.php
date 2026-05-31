@@ -57,6 +57,7 @@ class Api extends BaseController
 
     public function stock($id)
     {
+<<<<<<< HEAD
         if (!$this->auth()) return $this->unauthorized();
 
         $item = (new VariantModel())->find($id);
@@ -64,6 +65,21 @@ class Api extends BaseController
             return $this->response->setStatusCode(404)->setJSON(['error' => 'Variant not found']);
         }
 
+=======
+        $token = $this->request->getHeaderLine('Authorization');
+
+        if ($token != 'Bearer retailhub123') {
+            return $this->response
+                ->setStatusCode(401)
+                ->setJSON([
+                    'error' => 'Unauthorized'
+                ]);
+        }
+
+        $variant = new VariantModel();
+        $item = $variant->find($id);
+
+>>>>>>> 803c901cf9687c33afb769c1ec08baa413f64c19
         return $this->response->setJSON($item);
     }
 }
