@@ -9,8 +9,6 @@ class Variants extends BaseController
 {
     public function index($product_id)
     {
-        if (!session()->get('logged_in')) return redirect()->to('/');
-
         $variant = new VariantModel();
         $product = new ProductModel();
 

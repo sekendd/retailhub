@@ -149,16 +149,14 @@
                     <span class="link-text">Returns</span>
                 </a>
             </li>
-
+            
             <?php if(session()->get('role') == 'superadmin'): ?>
-
             <li>
-                <a href="#">
-                    <i class="fas fa-user-shield fa-fw me-2"></i>
-                    <span class="link-text">Admin Panel</span>
+                <a href="/users">
+                    <i class="fas fa-users-cog fa-fw me-2"></i>
+                    <span class="link-text">User Management</span>
                 </a>
             </li>
-
             <?php endif; ?>
 
             <li class="mt-auto mb-3">
@@ -252,9 +250,9 @@
                             Sales Today
                         </small>
 
-                        <h1 class="display-5 fw-bold my-3">
-                            ₱0
-                        </h1>
+                      <h1 class="display-5 fw-bold my-3">
+    ₱<?= $salesToday ?>
+</h1>
 
                         <a href="/sales"
                            class="btn btn-light btn-sm rounded-pill px-4">
@@ -275,9 +273,9 @@
                             Total Products
                         </small>
 
-                        <h1 class="display-5 fw-bold my-3 text-dark">
-                            0
-                        </h1>
+                      <h1 class="display-5 fw-bold my-3 text-dark">
+    <?= $totalProducts ?>
+</h1>
 
                         <a href="/products"
                            class="btn btn-outline-primary btn-sm rounded-pill px-4">

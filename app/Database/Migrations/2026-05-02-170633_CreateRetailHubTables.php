@@ -48,6 +48,16 @@ class CreateRetailHubTables extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('product_variants');
+
+        // SALES
+        $this->forge->addField([
+            'id'           => ['type'=>'INT','auto_increment'=>true],
+            'item_variant' => ['type'=>'INT'],
+            'item_quantity' => ['type'=>'INT'],
+            'created_at'   => ['type'=>'DATETIME','null'=>true],
+        ]);
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('sales');
     }
 
     public function down()
@@ -56,5 +66,6 @@ class CreateRetailHubTables extends Migration
         $this->forge->dropTable('categories');
         $this->forge->dropTable('products');
         $this->forge->dropTable('product_variants');
+        $this->forge->dropTable('sales');
     }
 }
