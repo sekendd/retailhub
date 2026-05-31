@@ -1,0 +1,113 @@
+
+/* Variables for easy maintenance */
+:root {
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --primary: #2563eb;
+    --text-main: #1f2937;
+    --sidebar-wide: 250px;
+    --sidebar-collapsed: 80px;
+    --radius: 16px;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+#wrapper { display: flex; width: 100%; }
+
+/* --- SIDEBAR: Default is Collapsed --- */
+#sidebar {
+    min-width: var(--sidebar-collapsed);
+    max-width: var(--sidebar-collapsed);
+    background: #212529;
+    color: #fff;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+/* When 'active' class is added, it expands */
+#sidebar.active {
+    min-width: var(--sidebar-wide);
+    max-width: var(--sidebar-wide);
+}
+
+#sidebar .sidebar-header {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1d20;
+}
+
+/* Hide/Show text based on state */
+#sidebar .link-text { display: none; margin-left: 10px; }
+#sidebar.active .link-text { display: inline; }
+
+#sidebar ul.components { padding: 10px; flex-grow: 1; }
+#sidebar ul li a {
+    padding: 15px;
+    display: block;
+    color: #adb5bd;
+    text-decoration: none;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+#sidebar ul li a i { width: 25px; text-align: center; font-size: 1.1rem; }
+#sidebar ul li a:hover, #sidebar ul li.active a {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* --- CONTENT AREA --- */
+#content {
+    flex: 1;
+    margin-left: var(--sidebar-collapsed); /* Matches collapsed sidebar */
+    min-height: 100vh;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Moves content right when sidebar expands */
+#content.active {
+    margin-left: var(--sidebar-wide);
+}
+
+/* Header Rectangle */
+.top-navbar-rect {
+    background: white;
+    padding: 15px 30px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Bento Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+    padding: 25px;
+}
+
+.hero-card { grid-column: span 2; }
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-main: #e0e0e0;
+}
+[data-theme="dark"] .top-navbar-rect { background: #1a1d20; border-color: #333; }
